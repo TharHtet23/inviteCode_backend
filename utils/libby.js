@@ -80,11 +80,13 @@ export const generateTokenAndSetCookie = (res, user_id) => {
 export const validateToken = (req, res, next) => {
     const token = req.cookies.jwt; // Get token from cookies
     if (!token) {
+        console.log("No token provided");
         return res.status(401).json({ con: false, msg: "No token provided" }); 
     }
 
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => { 
         if (err) {
+            console.log("Invalid token");
             return res.status(403).json({ con: false, msg: "Invalid token" }); // Invalid token
         }
         req.userId = decoded.id; // Store user ID in request

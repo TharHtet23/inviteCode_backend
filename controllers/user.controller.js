@@ -9,3 +9,12 @@ export const getAllUsers = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.userId);
+    fMsg(res, "User fetched successfully", user, 200);
+  } catch (error) {
+    next(error);
+  }
+};
