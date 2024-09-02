@@ -75,3 +75,20 @@ export const generateTokenAndSetCookie = (res, user_id) => {
         secure: process.env.NODE_ENV === 'development',
     });
 };
+
+// Middleware to validate JWT
+export const validateToken = (req, res, next) => {
+    const token = req.cookies.jwt; // Get token from cookies
+    if (!token) {
+        return res.status(401).json({ con: false, msg: "No token provided" }); 
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => { 
+        if (err) {
+            return res.status(403).json({ con: false, msg: "Invalid token" }); // Invalid token
+        }
+        req.userId = decoded.id; // Store user ID in request
+        console.log(`decoded: ${decoded.id}`);
+        next(); // Proceed to the next middleware
+    });
+};
