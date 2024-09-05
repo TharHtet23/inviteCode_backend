@@ -8,6 +8,10 @@ export const joinByInviteCode = async (req, res, next) => {
     if(currentUser.invitedBy){
       return next(new Error("You have already joined by invite code"));
     }
+
+    if(currentUser.inviteCode === inviteCode){
+      return next(new Error("You cannot invite yourself"));
+    }
     const user = await User.findOne({ inviteCode });
     if (!user) {
       return next(new Error("Invite code not found"));
