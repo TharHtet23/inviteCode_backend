@@ -70,9 +70,10 @@ export const generateTokenAndSetCookie = (res, user_id) => {
     // Set the JWT as a cookie in the response, with security features to prevent XSS and ensure it's sent over HTTPS in development.
     res.cookie('jwt', token, {
         httpOnly: true, // prevent XSS
-        sameSite: 'strict',
+        sameSite: 'None',
+        secure: true,
         maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in milliseconds
-        secure: process.env.NODE_ENV === 'development',
+       
     });
 };
 
