@@ -14,7 +14,7 @@ import inviteCodeRoute from "./routes/inviteCode.route.js";
 
 
 app.use(cors({
-  origin:"*",
+  origin:"https://tharhtet236401.github.io",
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 }));
