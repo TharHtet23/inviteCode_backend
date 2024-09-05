@@ -90,7 +90,6 @@ export const validateToken = (req, res, next) => {
             return res.status(403).json({ con: false, msg: "Invalid token" }); // Invalid token
         }
         req.userId = decoded.id; // Store user ID in request
-        console.log(`decoded: ${decoded.id}`);
         next(); // Proceed to the next middleware
     });
 };
