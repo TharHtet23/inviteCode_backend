@@ -61,7 +61,7 @@ export const login = async (req, res, next) => {
 
 export const logout = async (req, res, next) => {
   try {
-    res.clearCookie("token");
+    res.clearCookie("jwt");
     fMsg(res, "User logged out successfully", null, 200);
   } catch (error) {
     return next(new Error("Error in logout"));
