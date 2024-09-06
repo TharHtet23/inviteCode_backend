@@ -7,13 +7,14 @@ export const register = async (req, res, next) => {
     const { username, email, password, confirmPassword } = req.body; // Destructure request body
 
     if (password !== confirmPassword) { 
+
       return next(new Error("Password and Confirm Password do not match"));
     }
 
     const existingUser = await User.findOne({ email }); 
     if (existingUser) {
-      return next(new Error("User already exists")); 
-    }
+        return next(new Error("Email already in use")); 
+      }
 
     const inviteCode = generateCode(); // Generate invite code
 
@@ -42,11 +43,11 @@ export const login = async (req, res, next) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user) {
-      return next(new Error("User not found"));
+      return next(new Error("Email or Password is incorrect"));
     }
     
     if (!decode(password, user.password)) {
-      return next(new Error("Invalid password"));
+      return next(new Error("Email or Password is incorrect"));
     }
     const returnUser = user.toObject();
     delete returnUser.password;

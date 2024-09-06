@@ -57,11 +57,12 @@
           body: JSON.stringify({ email, password })
         });
 
-        if (response.ok) {
+        const data = await response.json();
+
+        if (data.con) {
           window.location.href = 'dashboard.html';
         } else {
-          const errorData = await response.json();
-          document.getElementById('loginError').innerText = errorData.message || 'Login failed!';
+          document.getElementById('loginError').innerText = data.message || 'Login failed!';
         }
       } catch (error) {
         document.getElementById('loginError').innerText = 'An error occurred. Please try again.';

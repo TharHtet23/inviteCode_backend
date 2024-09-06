@@ -23,6 +23,7 @@
           <p>Already have an account? <a href="login.html">Log in here</a></p>
         </div>
       </div>
+      <div id="errorMessage" class="alert alert-danger mt-3" style="display: none;"></div>
     </div>
   </div>
 
@@ -40,10 +41,21 @@
 
         if (response.ok) {
           window.location.href = 'dashboard.html';
+        } else if (response.status === 401) {
+          // User is not authenticated, do nothing (stay on the welcome page)
+        } else {
+          throw new Error('Unexpected error');
         }
       } catch (error) {
         console.error('Error checking auth status:', error);
+        showErrorMessage('An unexpected error occurred. Please try again later.');
       }
+    }
+
+    function showErrorMessage(message) {
+      const errorElement = document.getElementById('errorMessage');
+      errorElement.textContent = message;
+      errorElement.style.display = 'block';
     }
 
     checkAuthStatus();

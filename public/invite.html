@@ -51,8 +51,12 @@
           alert('Invite code used successfully!');
           window.location.href = 'dashboard.html';
         } else {
-          const errorData = await response.json();
-          document.getElementById('inviteError').innerText = errorData.msg || 'Failed to use invite code!';
+          const data = await response.json();
+          if (data.con) {
+            window.location.href = 'dashboard.html';
+          } else {
+            document.getElementById('inviteError').innerText = data.message || 'Failed to use invite code!';
+          }
         }
       } catch (error) {
         document.getElementById('inviteError').innerText = 'An error occurred. Please try again.';

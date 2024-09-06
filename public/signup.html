@@ -77,11 +77,12 @@
           body: JSON.stringify({ username, email, password, confirmPassword }),
         });
 
-        if (response.ok) {
+        const data = await response.json();
+
+        if (data.con) {
           window.location.href = 'invite.html';
         } else {
-          const errorData = await response.json();
-          document.getElementById('signupError').innerText = errorData.message || 'Signup failed!';
+          document.getElementById('signupError').innerText = data.message || 'Signup failed!';
         }
       } catch (error) {
         document.getElementById('signupError').innerText = 'An error occurred. Please try again.';

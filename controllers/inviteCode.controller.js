@@ -14,7 +14,7 @@ export const joinByInviteCode = async (req, res, next) => {
     }
     const user = await User.findOne({ inviteCode });
     if (!user) {
-      return next(new Error("Invite code not found"));
+      return next(new Error("Invite code not found "));
     }
     user.inviteCount = user.inviteCount + 1;
    

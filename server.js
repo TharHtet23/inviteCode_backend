@@ -46,8 +46,10 @@ app.use("*", (req, res, next) => {
   fMsg(res, "Invalid Route", null, 404);
 });
 
+// Error handling middleware
 app.use((err, req, res, next) => {
-  fMsg(res, err.message, null, err.status || 500);
+  err.status = err.status || 505;
+  res.status(err.status).json({ con: false, "message": err.message });
 });
 
 app.listen(PORT, () => {
