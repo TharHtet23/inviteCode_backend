@@ -23,6 +23,8 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
+app.use(express.static("public"));
+
 app.use("/test", testRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
