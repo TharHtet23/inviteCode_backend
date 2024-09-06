@@ -80,7 +80,6 @@ export const generateTokenAndSetCookie = (res, user_id) => {
 // Middleware to validate JWT
 export const validateToken = (req, res, next) => {
     const token = req.cookies.jwt; // Get token from cookies
-    console.log(token);
     if (!token) {
         console.log("No token provided");
         return res.status(401).json({ con: false, msg: "No token provided" }); 
