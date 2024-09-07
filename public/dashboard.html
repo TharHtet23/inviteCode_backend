@@ -2,58 +2,103 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Dashboard - Invite System</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-  <link href="styles.css" rel="stylesheet">
+  <style>
+    body {
+      font-size: 14px;
+      background-color: #f0f2f5;
+      color: #333;
+    }
+    .container {
+      max-width: 100%;
+      padding: 15px;
+    }
+    .card {
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .card-body {
+      padding: 20px;
+    }
+    .btn-sm {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.875rem;
+      border-radius: 20px;
+    }
+    .dashboard-header {
+      background-color: #4a90e2;
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    .invite-code {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #4a90e2;
+    }
+    .card-title {
+      color: #4a90e2;
+      font-weight: bold;
+    }
+    .text-muted {
+      color: #6c757d !important;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
-    <div class="content-container">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="mb-0">Welcome to Your Dashboard</h2>
-        <div>
-          <a href="leaderboard.html" class="btn btn-outline-primary me-2">
-            <i class="fas fa-trophy me-2"></i>Leaderboard
-          </a>
-          <button id="logoutBtn" class="btn btn-outline-danger">
-            <i class="fas fa-sign-out-alt me-2"></i>Logout
-          </button>
-        </div>
+    <div class="dashboard-header d-flex justify-content-between align-items-center">
+      <h3 class="mb-0">Welcome to Your Dashboard</h3>
+      <div>
+        <a href="leaderboard.html" class="btn btn-light btn-sm me-2">
+          <i class="fas fa-trophy me-1"></i>
+          <span class="d-none d-sm-inline">Leaderboard</span>
+        </a>
+        <button id="logoutBtn" class="btn btn-outline-light btn-sm">
+          <i class="fas fa-sign-out-alt me-1"></i>
+          <span class="d-none d-sm-inline">Logout</span>
+        </button>
       </div>
-      <div class="row g-4">
-        <div class="col-md-6">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title"><i class="fas fa-key me-2"></i>Your Invite Code</h5>
-              <p id="inviteCode" class="card-text fs-4 fw-bold"></p>
-              <p class="card-text text-muted">Share this code with friends to give them advantages when they sign up!</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title"><i class="fas fa-users me-2"></i>Invitation Code Usage</h5>
-              <p id="inviteCount" class="card-text fs-4 fw-bold"></p>
-              <p class="card-text text-muted">Number of times your code has been used.</p>
-            </div>
-          </div>
-        </div>
+    </div>
+    
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title"><i class="fas fa-key me-2"></i>Your Invite Code</h5>
+        <p id="inviteCode" class="invite-code mb-2"></p>
+        <p class="card-text text-muted">Share this code with friends to give them advantages when they sign up!</p>
       </div>
-      <div class="card mt-4">
-        <div class="card-body">
-          <h5 class="card-title"><i class="fas fa-share-alt me-2"></i>Share Your Invite Code</h5>
-          <p class="card-text">When your friends use your invite code during sign-up, they'll receive special benefits. The more friends you invite, the more rewards you can earn!</p>
-        </div>
+    </div>
+    
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title"><i class="fas fa-users me-2"></i>Invitation Code Usage</h5>
+        <p id="inviteCount" class="fs-4 fw-bold mb-2"></p>
+        <p class="card-text text-muted">Number of times your code has been used.</p>
+      </div>
+    </div>
+    
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title"><i class="fas fa-share-alt me-2"></i>Share Your Invite Code</h5>
+        <p class="card-text">When your friends use your invite code during sign-up, they'll receive special benefits. The more friends you invite, the more rewards you can earn!</p>
+        <button id="shareBtn" class="btn btn-primary btn-sm mt-2">
+          <i class="fas fa-share me-1"></i>Share Now
+        </button>
       </div>
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="auth.js"></script>
-  <script src="dashboard.js"></script>
   <script>
     async function fetchUserInfo() {
       try {
@@ -79,13 +124,16 @@
 
     document.getElementById('logoutBtn').addEventListener('click', async () => {
       try {
-        await fetch('/api/auth/logout', {
-          method: 'POST'
-        });
+        await fetch('/api/auth/logout', { method: 'POST' });
         window.location.href = 'login.html';
       } catch (error) {
         console.error('Error during logout:', error);
       }
+    });
+
+    document.getElementById('shareBtn').addEventListener('click', () => {
+      // Implement sharing functionality here
+      alert('Sharing functionality to be implemented');
     });
 
     fetchUserInfo();
