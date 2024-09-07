@@ -32,9 +32,9 @@ app.use(cookieParser());
 
 app.use(express.static("public"));
 
-// Add this line to serve your main HTML file
+// Update this line to serve splash.html as the default route
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'splash.html'));
 });
 
 app.use("/test", testRoute);

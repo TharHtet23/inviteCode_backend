@@ -54,25 +54,29 @@
       background-color: #4a90e2;
       border-color: #4a90e2;
     }
-    .top-3 {
-      font-weight: bold;
-      font-size: 1.1em;
-    }
-    .rank-1 {
-      background-color: #ffd700;
-      color: #333;
-    }
-    .rank-2 {
-      background-color: #c0c0c0;
-      color: #333;
-    }
-    .rank-3 {
-      background-color: #cd7f32;
-      color: #333;
-    }
     .medal {
       font-size: 1.2em;
       margin-right: 5px;
+    }
+    .leaderboard-row {
+      transition: transform 0.2s ease-in-out;
+    }
+    .leaderboard-row:hover {
+      transform: translateX(5px);
+    }
+    .rank-1 {
+      font-weight: bold;
+      font-size: 1.1em;
+    }
+    .rank-2 {
+      font-weight: bold;
+    }
+    .rank-3 {
+      font-weight: bold;
+    }
+    .invite-count {
+      font-weight: bold;
+      color: #4a90e2;
     }
   </style>
 </head>
@@ -129,23 +133,23 @@
           
           data.result.users.forEach((user, index) => {
             const rank = (page - 1) * 10 + index + 1;
-            let rowClass = '';
             let medal = '';
+            let rowClass = 'leaderboard-row';
             if (rank === 1) {
-              rowClass = 'rank-1 top-3';
               medal = '<span class="medal">🥇</span>';
+              rowClass += ' rank-1';
             } else if (rank === 2) {
-              rowClass = 'rank-2 top-3';
               medal = '<span class="medal">🥈</span>';
+              rowClass += ' rank-2';
             } else if (rank === 3) {
-              rowClass = 'rank-3 top-3';
               medal = '<span class="medal">🥉</span>';
+              rowClass += ' rank-3';
             }
             const row = `
               <tr class="${rowClass}">
                 <th scope="row">${medal}${rank}</th>
                 <td>${user.name}</td>
-                <td>${user.inviteCount}</td>
+                <td class="invite-count">${user.inviteCount}</td>
               </tr>
             `;
             leaderboardBody.innerHTML += row;
