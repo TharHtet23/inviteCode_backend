@@ -3,8 +3,28 @@ import { fMsg } from "../utils/libby.js";
 
 export const getAllUsers = async (req, res, next) => {
   try {
-    const users = await User.find();
-    fMsg(res, "Users fetched successfully", users, 200);
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10;
+    const skip = (page - 1) * limit;
+
+    const users = await User.find()
+      .sort({ inviteCount: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    const totalUsers = await User.countDocuments();
+
+    const filteredUsers = users.map(user => ({
+      name: user.username,
+      inviteCount: user.inviteCount
+    }));
+
+    fMsg(res, "Users fetched successfully", {
+      users: filteredUsers,
+      currentPage: page,
+      totalPages: Math.ceil(totalUsers / limit),
+      totalUsers
+    }, 200);
   } catch (error) {
     next(error);
   }

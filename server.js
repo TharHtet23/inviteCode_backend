@@ -43,7 +43,7 @@ app.use("/api/users", userRoute);
 app.use("/api/inviteCode", inviteCodeRoute);
 
 app.use("*", (req, res, next) => {
-  fMsg(res, "Invalid Route", null, 404);
+  next(new Error("Invalid Route"));
 });
 
 // Error handling middleware
