@@ -31,6 +31,10 @@ const userSchema = new mongoose.Schema({
       type: Number,
       default: 0,
     },
+    completedBy: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Task",
+    }],
 });
 
 const User = mongoose.model("User", userSchema);

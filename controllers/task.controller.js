@@ -48,3 +48,15 @@ export const deleteTask = async(req,res,next)=>{
         next(error)
     }
 }   
+
+
+export const completeTask = async(req,res,next)=>{
+    try{
+        const completedTask = req.pararm.taskId;
+        const user = req.user._id;
+        const task = await Task.findByIdAndUpdate(completedTask, { $push: { completedBy: user } }, { new: true });
+        fMsg(res, "Task completed successfully", task, 200);
+    }catch(error){
+        next(error)
+    }
+}

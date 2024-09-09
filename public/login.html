@@ -100,7 +100,7 @@
         const data = await response.json();
 
         if (data.con) {
-          window.location.href = 'dashboard.html';
+          window.location.href = 'tasks.html';
         } else {
           document.getElementById('loginError').innerText = data.message || 'Login failed!';
         }
