@@ -8,7 +8,7 @@ export const getAllUsers = async (req, res, next) => {
     const skip = (page - 1) * limit;
 
     const users = await User.find()
-      .sort({ inviteCount: -1 })
+      .sort({ points: -1 })
       .skip(skip)
       .limit(limit);
 

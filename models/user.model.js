@@ -27,6 +27,10 @@ const userSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    points: {
+      type: Number,
+      default: 0,
+    },
 });
 
 const User = mongoose.model("User", userSchema);

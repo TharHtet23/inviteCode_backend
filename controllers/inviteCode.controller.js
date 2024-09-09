@@ -17,6 +17,7 @@ export const joinByInviteCode = async (req, res, next) => {
       return next(new Error("Invite code not found "));
     }
     user.inviteCount = user.inviteCount + 1;
+    user.points = user.points + 100;
    
     currentUser.invitedBy = user._id;
 

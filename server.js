@@ -12,6 +12,7 @@ import testRoute from "./routes/test.route.js";
 import authRoute from "./routes/auth.route.js";
 import userRoute from "./routes/user.route.js";
 import inviteCodeRoute from "./routes/inviteCode.route.js";
+import taskRoute from "./routes/task.route.js";
 
 
 // Remove or comment out the existing CORS configuration
@@ -41,6 +42,7 @@ app.use("/test", testRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/inviteCode", inviteCodeRoute);
+app.use("/api/tasks", taskRoute);
 
 app.use("*", (req, res, next) => {
   next(new Error("Invalid Route"));
@@ -49,7 +51,7 @@ app.use("*", (req, res, next) => {
 // Error handling middleware
 app.use((err, req, res, next) => {
   err.status = err.status || 505;
-  res.status(err.status).json({ con: false, "message": err.message });
+  res.status(err.status).json({ con: false, "msg": err.message });
 });
 
 app.listen(PORT, () => {
