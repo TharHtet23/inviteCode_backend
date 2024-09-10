@@ -22,12 +22,12 @@ body {
 }
 
 .card-body {
-  padding: 25px;
+  padding: 15px;
 }
 
 .btn {
   border-radius: 25px;
-  padding: 10px 20px;
+  padding: 8px 16px;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -46,12 +46,13 @@ body {
 .header {
   background-color: #4a90e2;
   color: white;
-  padding: 30px 0;
-  margin-bottom: 30px;
+  padding: 15px 0;
+  margin-bottom: 15px;
   border-radius: 0 0 15px 15px;
 }
 
 .header h2 {
+  font-size: 1.5rem;
   margin-bottom: 0;
 }
 
@@ -110,14 +111,25 @@ body {
 
 .table {
   color: #333;
+  font-size: 14px;
 }
 
 .table th {
   color: #4a90e2;
 }
 
+.table td,
+.table th {
+  padding: 10px;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
 .pagination .page-link {
   color: #4a90e2;
+  padding: 0.25rem 0.5rem;
 }
 
 .pagination .page-item.active .page-link {
@@ -150,4 +162,40 @@ body {
 .points-count {
   font-weight: bold;
   color: #4a90e2;
+}
+
+.telegram-app .card {
+  margin-bottom: 10px;
+}
+
+.telegram-app .card-body {
+  padding: 12px;
+}
+
+.telegram-app .card-title {
+  margin-bottom: 8px;
+}
+
+.telegram-app .btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+.telegram-app .invite-code {
+  font-size: 1.5rem;
+}
+
+.telegram-app .small {
+  font-size: 0.875rem;
+}
+
+.telegram-app .fs-4 {
+  font-size: 1.25rem !important;
+}
+
+@media (max-width: 576px) {
+  .telegram-app .container-fluid {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
 }

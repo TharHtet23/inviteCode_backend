@@ -10,58 +10,59 @@
   <link href="styles.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
-<body>
+<body class="telegram-app">
   <div class="header">
-    <div class="container">
+    <div class="container-fluid">
       <div class="d-flex justify-content-between align-items-center">
-        <h2><i class="fas fa-tachometer-alt me-2"></i>Your Dashboard</h2>
+        <h2 class="h4 mb-0"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</h2>
         <div>
-          <a href="tasks.html" class="btn btn-light btn-sm me-2">
-            <i class="fas fa-tasks me-1"></i>
-            <span class="d-none d-sm-inline">Tasks</span>
+          <a href="tasks.html" class="btn btn-light btn-sm me-1">
+            <i class="fas fa-tasks"></i>
           </a>
-          <a href="leaderboard.html" class="btn btn-light btn-sm me-2">
-            <i class="fas fa-trophy me-1"></i>
-            <span class="d-none d-sm-inline">Leaderboard</span>
+          <a href="leaderboard.html" class="btn btn-light btn-sm me-1">
+            <i class="fas fa-trophy"></i>
           </a>
           <button id="logoutBtn" class="btn btn-outline-light btn-sm">
-            <i class="fas fa-sign-out-alt me-1"></i>
-            <span class="d-none d-sm-inline">Logout</span>
+            <i class="fas fa-sign-out-alt"></i>
           </button>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="container">
-    <div class="card">
+  <div class="container-fluid">
+    <div class="card mb-3">
       <div class="card-body">
-        <h5 class="card-title"><i class="fas fa-key me-2"></i>Your Invite Code</h5>
+        <h5 class="card-title h6"><i class="fas fa-key me-2"></i>Your Invite Code</h5>
         <p id="inviteCode" class="invite-code mb-2"></p>
-        <p class="card-text text-muted">Share this code with friends to give them advantages when they sign up!</p>
+        <p class="card-text text-muted small">Share this code with friends!</p>
       </div>
     </div>
     
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title"><i class="fas fa-users me-2"></i>Invitation Code Usage</h5>
-        <p id="inviteCount" class="fs-4 fw-bold mb-2"></p>
-        <p class="card-text text-muted">Number of times your code has been used.</p>
+    <div class="row row-cols-1 row-cols-md-2 g-3">
+      <div class="col">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title h6"><i class="fas fa-users me-2"></i>Invites Used</h5>
+            <p id="inviteCount" class="fs-4 fw-bold mb-0"></p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title h6"><i class="fas fa-coins me-2"></i>Your Points</h5>
+            <p id="userPoints" class="fs-4 fw-bold mb-0"></p>
+          </div>
+        </div>
       </div>
     </div>
     
-    <div class="card">
+    <div class="card mt-3">
       <div class="card-body">
-        <h5 class="card-title"><i class="fas fa-coins me-2"></i>Your Points</h5>
-        <p id="userPoints" class="fs-4 fw-bold mb-2"></p>
-        <p class="card-text text-muted">Total points earned from completed tasks.</p>
-      </div>
-    </div>
-    
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title"><i class="fas fa-share-alt me-2"></i>Share Your Invite Code</h5>
-        <p class="card-text">When your friends use your invite code during sign-up, they'll receive special benefits. The more friends you invite, the more rewards you can earn!</p>
+        <h5 class="card-title h6"><i class="fas fa-share-alt me-2"></i>Share Your Code</h5>
+        <p class="card-text small">Invite friends to earn more rewards!</p>
         <button id="shareBtn" class="btn btn-primary btn-sm mt-2">
           <i class="fas fa-share me-1"></i>Share Now
         </button>
@@ -88,7 +89,7 @@
       try {
         await axios.post('/api/auth/logout');
         window.location.href = 'login.html';
-      } catch (error) {i
+      } catch (error) {
         console.error('Error during logout:', error);
       }
     });
