@@ -7,6 +7,7 @@ export const getTasks = async (req, res,next) => {
     if(tasks.length === 0){
         return next(new Error("No tasks found"))
     }
+    tasks.sort((a, b) => b.points - a.points);
     fMsg(res, "Tasks fetched successfully", tasks, 200);
   } catch (error) {
     next(error)
@@ -52,8 +53,9 @@ export const deleteTask = async(req,res,next)=>{
 
 export const completeTask = async(req,res,next)=>{
     try{
-        const completedTask = req.pararm.taskId;
-        const user = req.user._id;
+        const completedTask = req.params.taskId;
+        const user = req.userId;
+       
         const task = await Task.findByIdAndUpdate(completedTask, { $push: { completedBy: user } }, { new: true });
         fMsg(res, "Task completed successfully", task, 200);
     }catch(error){
