@@ -1,82 +1,153 @@
 body {
-  background-color: #f5f7fa;
   font-family: 'Roboto', sans-serif;
-  display: flex;
-  align-items: center;
-  min-height: 100vh;
-  color: #34495e;
+  background-color: #f8f9fa;
+  color: #333;
 }
 
 .container {
   max-width: 800px;
-}
-
-.content-container {
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  padding: 40px;
-}
-
-.btn-primary {
-  background-color: #3498db;
-  border-color: #3498db;
-}
-
-.btn-primary:hover, .btn-primary:focus {
-  background-color: #2980b9;
-  border-color: #2980b9;
-}
-
-.btn-outline-secondary {
-  color: #2c3e50;
-  border-color: #2c3e50;
-}
-
-.btn-outline-secondary:hover, .btn-outline-secondary:focus {
-  background-color: #2c3e50;
-  color: #ffffff;
-}
-
-.btn-outline-danger {
-  color: #e74c3c;
-  border-color: #e74c3c;
-}
-
-.btn-outline-danger:hover, .btn-outline-danger:focus {
-  background-color: #e74c3c;
-  color: #ffffff;
-}
-
-.btn {
-  transition: all 0.3s ease;
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-a {
-  color: #3498db;
-  text-decoration: none;
-}
-
-a:hover {
-  color: #2980b9;
+  padding: 20px;
 }
 
 .card {
   border: none;
+  border-radius: 15px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  transition: transform 0.3s ease;
 }
 
-.card-title {
-  color: #2c3e50;
+.card:hover {
+  transform: translateY(-5px);
 }
 
-@media (max-width: 576px) {
-  .content-container {
-    padding: 30px;
-  }
+.card-body {
+  padding: 25px;
+}
+
+.btn {
+  border-radius: 25px;
+  padding: 10px 20px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-primary {
+  background-color: #4a90e2;
+  border-color: #4a90e2;
+}
+
+.btn-primary:hover {
+  background-color: #3a7bc8;
+  border-color: #3a7bc8;
+}
+
+.header {
+  background-color: #4a90e2;
+  color: white;
+  padding: 30px 0;
+  margin-bottom: 30px;
+  border-radius: 0 0 15px 15px;
+}
+
+.header h2 {
+  margin-bottom: 0;
+}
+
+.task-item {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.task-content {
+  flex-grow: 1;
+}
+
+.task-reward {
+  font-weight: bold;
+  color: #28a745;
+  min-width: 80px; /* Ensures consistent width for point display */
+}
+
+.btn-complete.completed {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.btn-complete.completed:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
+}
+
+.task-icon {
+  transition: color 0.3s ease;
+}
+
+.invite-code {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #4a90e2;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+.btn-outline-light {
+  color: #fff;
+  border-color: #fff;
+}
+
+.btn-outline-light:hover {
+  color: #4a90e2;
+  background-color: #fff;
+}
+
+.table {
+  color: #333;
+}
+
+.table th {
+  color: #4a90e2;
+}
+
+.pagination .page-link {
+  color: #4a90e2;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #4a90e2;
+  border-color: #4a90e2;
+}
+
+.medal {
+  font-size: 1.2em;
+  margin-right: 5px;
+}
+
+.leaderboard-row {
+  transition: transform 0.2s ease-in-out;
+}
+
+.leaderboard-row:hover {
+  transform: translateX(5px);
+}
+
+.rank-1 {
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.rank-2, .rank-3 {
+  font-weight: bold;
+}
+
+.points-count {
+  font-weight: bold;
+  color: #4a90e2;
 }

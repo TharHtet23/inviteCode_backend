@@ -16,7 +16,7 @@ export const getAllUsers = async (req, res, next) => {
 
     const filteredUsers = users.map(user => ({
       name: user.username,
-      inviteCount: user.inviteCount
+      points: user.points
     }));
 
     fMsg(res, "Users fetched successfully", {

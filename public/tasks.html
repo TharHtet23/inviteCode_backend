@@ -6,67 +6,32 @@
   <title>Complete Tasks - Invite System</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-  <style>
-    body {
-      font-size: 14px;
-      background-color: #f0f2f5;
-      color: #333;
-    }
-    .container {
-      max-width: 100%;
-      padding: 15px;
-    }
-    .card {
-      margin-bottom: 15px;
-      border: none;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-    .card-body {
-      padding: 20px;
-    }
-    .btn {
-      border-radius: 20px;
-    }
-    .task-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
-      padding: 15px;
-      border-radius: 10px;
-      background-color: #f8f9fa;
-    }
-    .task-content {
-      flex-grow: 1;
-    }
-    .task-reward {
-      font-weight: bold;
-      color: #28a745;
-    }
-    .btn-complete.completed {
-      background-color: #28a745;
-      border-color: #28a745;
-    }
-    .btn-complete.completed:hover {
-      background-color: #218838;
-      border-color: #1e7e34;
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
-  <div class="container">
-    <div class="invite-header text-center">
-      <h2><i class="fas fa-tasks me-2"></i>Your Task List</h2>
+  <div class="header">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2><i class="fas fa-tasks me-2"></i>Your Task List</h2>
+        <a href="dashboard.html" class="btn btn-light btn-sm">
+          <i class="fas fa-tachometer-alt me-1"></i>
+          <span class="d-none d-sm-inline">Dashboard</span>
+        </a>
+      </div>
     </div>
+  </div>
+
+  <div class="container">
     <div class="card">
       <div class="card-body">
         <h5 class="card-title mb-4">Complete these tasks to earn rewards and unlock full access:</h5>
         <div id="taskList">
           <!-- Tasks will be dynamically inserted here -->
         </div>
-        <div id="totalPoints" class="text-center mt-3">
-          <h5>Total Points: <span id="pointsValue">0</span></h5>
+        <div id="totalPoints" class="text-center mt-4">
+          <h5>Total Points: <span id="pointsValue" class="badge bg-primary">0</span></h5>
         </div>
       </div>
     </div>
@@ -75,7 +40,22 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="auth.js"></script>
   <script>
+    let currentUserId = null;
+
+    async function fetchUserInfo() {
+      try {
+        const response = await axios.get('/api/users/info');
+        const data = response.data;
+        currentUserId = data.result._id;
+        // ... rest of the function
+      } catch (error) {
+        console.error('Error fetching user info:', error);
+        window.location.href = 'login.html';
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', async () => {
+      await fetchUserInfo();
       const taskList = document.getElementById('taskList');
       const pointsValue = document.getElementById('pointsValue');
 
@@ -83,16 +63,12 @@
 
       // Fetch tasks from server
       try {
-        const response = await fetch('/api/tasks');
-        if (response.ok) {
-          const data = await response.json();
-          if (data.con && data.result) {
-            renderTasks(data.result);
-          } else {
-            throw new Error('Invalid server response');
-          }
+        const response = await axios.get('/api/tasks');
+        if (response.data.con && response.data.result) {
+          renderTasks(response.data.result);
+          updateTotalPoints(response.data.result);
         } else {
-          throw new Error('Failed to fetch tasks');
+          throw new Error('Invalid server response');
         }
       } catch (error) {
         console.error('Error fetching tasks:', error);
@@ -100,28 +76,66 @@
       }
 
       function renderTasks(tasks) {
-        taskList.innerHTML = tasks.map(task => `
-          <div class="task-item" data-task-id="${task._id}">
-            <div class="task-content">
-              <h6><i class="fas fa-check-circle me-2"></i>${task.title}</h6>
-              <p>${task.description}</p>
-              <button class="btn btn-primary btn-sm btn-complete" onclick="completeTask('${task._id}', ${task.points}, this)">Complete Task</button>
+        taskList.innerHTML = tasks.map(task => {
+          const isCompleted = task.completedBy.includes(currentUserId);
+          return `
+            <div class="task-item d-flex justify-content-between align-items-center" data-task-id="${task._id}">
+              <div class="task-content flex-grow-1">
+                <h6>
+                  <i class="fas ${isCompleted ? 'fa-check-circle' : 'fa-circle-notch'} me-2 task-icon" style="color: ${isCompleted ? '#28a745' : '#4a90e2'};"></i>
+                  ${task.title}
+                </h6>
+                <p class="mb-2">${task.description}</p>
+                <button class="btn btn-primary btn-sm btn-complete ${isCompleted ? 'completed' : ''}" 
+                        onclick="completeTask('${task._id}', ${task.points}, this)" 
+                        ${isCompleted ? 'disabled' : ''}>
+                  ${isCompleted ? 'Completed' : 'Complete Task'}
+                </button>
+              </div>
+              <div class="task-reward ms-3 text-end">
+                <i class="fas fa-coins me-1"></i>${task.points} points
+              </div>
             </div>
-            <div class="task-reward">
-              <i class="fas fa-coins me-1"></i>${task.points} points
-            </div>
-          </div>
-        `).join('');
+          `;
+        }).join('');
+      }
+
+      function updateTotalPoints(tasks) {
+        totalPoints = tasks.reduce((sum, task) => task.completedBy.includes(currentUserId) ? sum + task.points : sum, 0);
+        pointsValue.textContent = totalPoints;
       }
 
       // Global function to complete a task
-      window.completeTask = function(taskId, points, button) {
+      window.completeTask = async function(taskId, points, button) {
         if (!button.classList.contains('completed')) {
-          button.classList.add('completed');
-          button.textContent = 'Completed';
-          button.disabled = true;
-          totalPoints += points;
-          pointsValue.textContent = totalPoints;
+          button.disabled = true;  // Disable button immediately
+          try {
+            const response = await axios.post(`/api/tasks/complete/${taskId}`);
+            console.log('Server response:', response.data);
+
+            if (response.data.con) {
+              button.classList.add('completed');
+              button.textContent = 'Completed';
+
+              // Change the icon to a green tick
+              const taskItem = button.closest('.task-item');
+              const taskIcon = taskItem.querySelector('.task-icon');
+              taskIcon.classList.remove('fa-circle-notch');
+              taskIcon.classList.add('fa-check-circle');
+              taskIcon.style.color = '#28a745';
+
+              totalPoints += points;
+              pointsValue.textContent = totalPoints;
+
+              console.log('Task completed successfully');
+            } else {
+              throw new Error(response.data.msg || 'Failed to complete task');
+            }
+          } catch (error) {
+            console.error('Error completing task:', error);
+            alert(`Failed to complete task: ${error.message}. Please try again.`);
+            button.disabled = false;  // Re-enable button if there's an error
+          }
         }
       };
     });

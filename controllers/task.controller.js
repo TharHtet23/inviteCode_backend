@@ -1,5 +1,6 @@
 import Task from "../models/task.model.js";
 import { fMsg } from "../utils/libby.js";
+import User from "../models/user.model.js";
 
 export const getTasks = async (req, res,next) => {
   try {
@@ -57,6 +58,10 @@ export const completeTask = async(req,res,next)=>{
         const user = req.userId;
        
         const task = await Task.findByIdAndUpdate(completedTask, { $push: { completedBy: user } }, { new: true });
+
+        const taskPoints = task.points;
+        const increasePointUser = await User.findByIdAndUpdate(user, { $inc: { points: taskPoints } }, { new: true });
+
         fMsg(res, "Task completed successfully", task, 200);
     }catch(error){
         next(error)
