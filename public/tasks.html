@@ -10,29 +10,31 @@
   <link href="styles.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
-<body>
+<body class="telegram-app">
   <div class="header">
-    <div class="container">
+    <div class="container-fluid">
       <div class="d-flex justify-content-between align-items-center">
-        <h2><i class="fas fa-tasks me-2"></i>Your Task List</h2>
+        <h2 class="h4 mb-0"><i class="fas fa-tasks me-2"></i>Your Tasks</h2>
         <a href="dashboard.html" class="btn btn-light btn-sm">
-          <i class="fas fa-tachometer-alt me-1"></i>
-          <span class="d-none d-sm-inline">Dashboard</span>
+          <i class="fas fa-tachometer-alt"></i>
         </a>
       </div>
     </div>
   </div>
 
-  <div class="container">
-    <div class="card">
+  <div class="container-fluid">
+    <div class="card mb-3">
       <div class="card-body">
-        <h5 class="card-title mb-4">Complete these tasks to earn rewards and unlock full access:</h5>
+        <h5 class="card-title h6">Complete tasks to earn rewards:</h5>
         <div id="taskList">
           <!-- Tasks will be dynamically inserted here -->
         </div>
-        <div id="totalPoints" class="text-center mt-4">
-          <h5>Total Points: <span id="pointsValue" class="badge bg-primary">0</span></h5>
-        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body text-center">
+        <h5 class="card-title h6">Total Points</h5>
+        <p id="pointsValue" class="fs-4 fw-bold mb-0">0</p>
       </div>
     </div>
   </div>
@@ -47,7 +49,6 @@
         const response = await axios.get('/api/users/info');
         const data = response.data;
         currentUserId = data.result._id;
-        // ... rest of the function
       } catch (error) {
         console.error('Error fetching user info:', error);
         window.location.href = 'login.html';
@@ -61,7 +62,6 @@
 
       let totalPoints = 0;
 
-      // Fetch tasks from server
       try {
         const response = await axios.get('/api/tasks');
         if (response.data.con && response.data.result) {
@@ -79,21 +79,21 @@
         taskList.innerHTML = tasks.map(task => {
           const isCompleted = task.completedBy.includes(currentUserId);
           return `
-            <div class="task-item d-flex justify-content-between align-items-center" data-task-id="${task._id}">
-              <div class="task-content flex-grow-1">
-                <h6>
+            <div class="task-item d-flex justify-content-between align-items-center mb-3" data-task-id="${task._id}">
+              <div class="task-content">
+                <h6 class="mb-1">
                   <i class="fas ${isCompleted ? 'fa-check-circle' : 'fa-circle-notch'} me-2 task-icon" style="color: ${isCompleted ? '#28a745' : '#4a90e2'};"></i>
                   ${task.title}
                 </h6>
-                <p class="mb-2">${task.description}</p>
+                <p class="mb-2 small">${task.description}</p>
                 <button class="btn btn-primary btn-sm btn-complete ${isCompleted ? 'completed' : ''}" 
                         onclick="completeTask('${task._id}', ${task.points}, this)" 
                         ${isCompleted ? 'disabled' : ''}>
-                  ${isCompleted ? 'Completed' : 'Complete Task'}
+                  ${isCompleted ? 'Completed' : 'Complete'}
                 </button>
               </div>
               <div class="task-reward ms-3 text-end">
-                <i class="fas fa-coins me-1"></i>${task.points} points
+                <span class="badge bg-success">${task.points} pts</span>
               </div>
             </div>
           `;
@@ -105,10 +105,9 @@
         pointsValue.textContent = totalPoints;
       }
 
-      // Global function to complete a task
       window.completeTask = async function(taskId, points, button) {
         if (!button.classList.contains('completed')) {
-          button.disabled = true;  // Disable button immediately
+          button.disabled = true;
           try {
             const response = await axios.post(`/api/tasks/complete/${taskId}`);
             console.log('Server response:', response.data);
@@ -117,7 +116,6 @@
               button.classList.add('completed');
               button.textContent = 'Completed';
 
-              // Change the icon to a green tick
               const taskItem = button.closest('.task-item');
               const taskIcon = taskItem.querySelector('.task-icon');
               taskIcon.classList.remove('fa-circle-notch');
@@ -134,7 +132,7 @@
           } catch (error) {
             console.error('Error completing task:', error);
             alert(`Failed to complete task: ${error.message}. Please try again.`);
-            button.disabled = false;  // Re-enable button if there's an error
+            button.disabled = false;
           }
         }
       };
