@@ -9,6 +9,23 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link href="styles.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+    .floating-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #4a90e2;
+      color: white;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body class="telegram-app">
   <div class="header">
@@ -25,40 +42,53 @@
   <div class="container-fluid">
     <div class="card mb-3">
       <div class="card-body">
-        <h5 class="card-title h6"><i class="fas fa-plus-circle me-2"></i>Create New Task</h5>
-        <form id="createTaskForm">
-          <div class="mb-3">
-            <label for="taskTitle" class="form-label">Task Title</label>
-            <input type="text" class="form-control" id="taskTitle" required>
-          </div>
-          <div class="mb-3">
-            <label for="taskDescription" class="form-label">Task Description</label>
-            <textarea class="form-control" id="taskDescription" rows="3" required></textarea>
-          </div>
-          <div class="mb-3">
-            <label for="taskPoints" class="form-label">Points</label>
-            <input type="number" class="form-control" id="taskPoints" required min="1">
-          </div>
-          <div class="mb-3">
-            <label for="taskLink" class="form-label">Task Link (Optional)</label>
-            <input type="url" class="form-control" id="taskLink">
-          </div>
-          <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="taskIsActive" checked>
-            <label class="form-check-label" for="taskIsActive">Is Active</label>
-          </div>
-          <button type="submit" class="btn btn-primary btn-sm">
-            <i class="fas fa-save me-1"></i>Create Task
-          </button>
-        </form>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-body">
         <h5 class="card-title h6"><i class="fas fa-list me-2"></i>Existing Tasks</h5>
         <div id="taskList" class="list-group">
           <!-- Existing tasks will be dynamically inserted here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Button -->
+  <div class="floating-btn" data-bs-toggle="modal" data-bs-target="#createTaskModal">
+    <i class="fas fa-plus"></i>
+  </div>
+
+  <!-- Create Task Modal -->
+  <div class="modal fade" id="createTaskModal" tabindex="-1" aria-labelledby="createTaskModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg"> <!-- Added modal-lg class for larger modal -->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createTaskModalLabel">Create New Task</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="createTaskForm">
+            <div class="mb-3">
+              <label for="taskTitle" class="form-label">Task Title</label>
+              <input type="text" class="form-control" id="taskTitle" required>
+            </div>
+            <div class="mb-3">
+              <label for="taskDescription" class="form-label">Task Description</label>
+              <textarea class="form-control" id="taskDescription" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="taskPoints" class="form-label">Points</label>
+              <input type="number" class="form-control" id="taskPoints" required min="1">
+            </div>
+            <div class="mb-3">
+              <label for="taskLink" class="form-label">Task Link (Optional)</label>
+              <input type="url" class="form-control" id="taskLink">
+            </div>
+            <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input" id="taskIsActive" checked>
+              <label class="form-check-label" for="taskIsActive">Is Active</label>
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm">
+              <i class="fas fa-save me-1"></i>Create Task
+            </button>
+          </form>
         </div>
       </div>
     </div>
@@ -72,13 +102,13 @@
 
       createTaskForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const taskData = [{
+        const taskData = {
           title: document.getElementById('taskTitle').value,
           description: document.getElementById('taskDescription').value,
           points: parseInt(document.getElementById('taskPoints').value),
           link: document.getElementById('taskLink').value || null,
           isActive: document.getElementById('taskIsActive').checked
-        }];
+        };
 
         try {
           const response = await axios.post('/api/tasks/create', taskData);
@@ -86,6 +116,8 @@
             alert('Task created successfully!');
             createTaskForm.reset();
             fetchTasks();
+            const createTaskModal = new bootstrap.Modal(document.getElementById('createTaskModal'));
+            createTaskModal.hide();
           } else {
             throw new Error(response.data.msg || 'Failed to create task');
           }
