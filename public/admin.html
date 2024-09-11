@@ -12,8 +12,8 @@
   <style>
     .floating-btn {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
+      bottom: 30px;
+      right: 30px;
       background-color: #4a90e2;
       color: white;
       border-radius: 50%;
@@ -24,6 +24,13 @@
       justify-content: center;
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
       cursor: pointer;
+      font-size: 24px;
+      transition: all 0.3s ease;
+    }
+    .floating-btn:hover {
+      background-color: #357abd;
+      box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+      transform: scale(1.05);
     }
   </style>
 </head>
@@ -57,7 +64,7 @@
 
   <!-- Create Task Modal -->
   <div class="modal fade" id="createTaskModal" tabindex="-1" aria-labelledby="createTaskModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg"> <!-- Added modal-lg class for larger modal -->
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="createTaskModalLabel">Create New Task</h5>
@@ -85,7 +92,7 @@
               <input type="checkbox" class="form-check-input" id="taskIsActive" checked>
               <label class="form-check-label" for="taskIsActive">Is Active</label>
             </div>
-            <button type="submit" class="btn btn-primary btn-sm">
+            <button type="submit" class="btn btn-primary">
               <i class="fas fa-save me-1"></i>Create Task
             </button>
           </form>
@@ -116,7 +123,7 @@
             alert('Task created successfully!');
             createTaskForm.reset();
             fetchTasks();
-            const createTaskModal = new bootstrap.Modal(document.getElementById('createTaskModal'));
+            const createTaskModal = bootstrap.Modal.getInstance(document.getElementById('createTaskModal'));
             createTaskModal.hide();
           } else {
             throw new Error(response.data.msg || 'Failed to create task');
