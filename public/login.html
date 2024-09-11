@@ -98,9 +98,13 @@
         });
 
         const data = await response.json();
-
+          
         if (data.con) {
-          window.location.href = 'tasks.html';
+          if (data.result && data.result.role === 'admin') {
+            window.location.href = 'admin.html';
+          } else {
+            window.location.href = 'tasks.html';
+          }
         } else {
           document.getElementById('loginError').innerText = data.message || 'Login failed!';
         }
